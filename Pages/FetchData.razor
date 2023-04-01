@@ -8,6 +8,18 @@
 @using CIP.Website.Data.Services;
 @inject ICryptocurrency cryptocurrency
 
+<style>
+    .thead-dark {
+        background-color: #020927;
+        color: white;
+    }
+
+    .row-on-hover:hover {
+        cursor: pointer;
+        background-color: #DCDCDC;
+    }
+</style>
+
 <div class="card text-center">
     <div class="card-header">
         The Top 100 Cryptocurrencies
@@ -27,7 +39,7 @@
                 <tbody>
                     @foreach(Cryptocurrency cryptocurrency in _cryptocurrencies)
                     {
-                        <tr>
+                        <tr class="row-on-hover">
                             <td>@cryptocurrency.Rank</td>
                             <td>@cryptocurrency.Name</td>
                             <td>@cryptocurrency.USDValuation</td>
