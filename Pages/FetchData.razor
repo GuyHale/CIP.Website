@@ -6,6 +6,7 @@
 @using CIP.Website.Data.Interfaces;
 @using CIP.Website.Data.Models;
 @using CIP.Website.Data.Services;
+@using MudBlazor;
 @inject ICryptocurrency cryptocurrency
 
 <style>
@@ -20,44 +21,34 @@
     }
 </style>
 
-<div class="card text-center">
-    <div class="card-header">
-        The Top 100 Cryptocurrencies
-    </div>
-    <div class="card-body">
-       @if(_cryptocurrencies.Any())
-        {
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Rank</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Coin Value</th>
-                        <th scope="col">Market Cap</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach(Cryptocurrency cryptocurrency in _cryptocurrencies)
-                    {
-                        <tr class="row-on-hover">
-                            <td>@cryptocurrency.Rank</td>
-                            <td>@cryptocurrency.Name</td>
-                            <td>@cryptocurrency.USDValuation</td>
-                            <td>@cryptocurrency.MarketCap</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-    </div>
-    <div class="card-footer text-muted">
-        2 days ago
-    </div>
-</div>
+<MudTable Items="@_cryptocurrencies" FixedHeader="@_fixedHeader" Height="@("400px")">
+    <HeaderContent>
+        <MudTh>Rank</MudTh>
+        <MudTh>Name</MudTh>
+        <MudTh>Coin Valuation</MudTh>
+        <MudTh>Market Cap</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Rank">@context.Rank</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Valuation">@context.USDValuation</MudTd>
+        <MudTd DataLabel="Market Cap">@context.MarketCap</MudTd>
+    </RowTemplate>
+    <FooterContent>
+        <MudTd>Rank</MudTd>
+        <MudTd>Name</MudTd>
+        <MudTd>Coin Valuation</MudTd>
+        <MudTd>Market Cap</MudTd>
+    </FooterContent>
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+    </PagerContent>
+</MudTable>
 
 
 
 @code {
+    private bool _fixedHeader = true;
     private IEnumerable<Cryptocurrency> _cryptocurrencies = Enumerable.Empty<Cryptocurrency>();
 
     protected override async Task OnInitializedAsync()
