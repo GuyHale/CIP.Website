@@ -26,7 +26,7 @@ namespace CIP.Website.Data.Services
         {
             try
             {
-                HttpClient client = _httpClientFactory.CreateClient("CIP.API.Url");
+                HttpClient client = _httpClientFactory.CreateClient("CIP.API");
                 HttpResponseMessage httpResponseMessage = await client.GetAsync("cip/cryptocurrencies/get");
 
                 if(httpResponseMessage.StatusCode != System.Net.HttpStatusCode.OK)

@@ -1,48 +1,55 @@
-﻿@page "/fetchdata"
+﻿@page "/cryptocurrencies"
 
-<PageTitle>Weather forecast</PageTitle>
+<PageTitle>Cryptocurrencies</PageTitle>
 
 @using CIP.Website.Data
-@inject WeatherForecastService ForecastService
+@using CIP.Website.Data.Interfaces;
+@using CIP.Website.Data.Models;
+@using CIP.Website.Data.Services;
+@inject ICryptocurrency cryptocurrency
 
-<h1>Weather forecast</h1>
+<div class="card text-center">
+    <div class="card-header">
+        The Top 100 Cryptocurrencies
+    </div>
+    <div class="card-body">
+       @if(_cryptocurrencies.Any())
+        {
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Rank</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Coin Value</th>
+                        <th scope="col">Market Cap</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(Cryptocurrency cryptocurrency in _cryptocurrencies)
+                    {
+                        <tr>
+                            <td>@cryptocurrency.Rank</td>
+                            <td>@cryptocurrency.Name</td>
+                            <td>@cryptocurrency.USDValuation</td>
+                            <td>@cryptocurrency.MarketCap</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+    <div class="card-footer text-muted">
+        2 days ago
+    </div>
+</div>
 
-<p>This component demonstrates fetching data from a service.</p>
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private IEnumerable<Cryptocurrency> _cryptocurrencies = Enumerable.Empty<Cryptocurrency>();
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        _cryptocurrencies = await cryptocurrency.Get();
     }
 }
