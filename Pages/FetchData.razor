@@ -19,31 +19,55 @@
         cursor: pointer;
         background-color: #DCDCDC;
     }
+
+    .page-background {
+        
+        width: 100%;
+        height: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
 </style>
 
-<MudTable Items="@_cryptocurrencies" FixedHeader="@_fixedHeader" Height="@("400px")">
-    <HeaderContent>
-        <MudTh>Rank</MudTh>
-        <MudTh>Name</MudTh>
-        <MudTh>Coin Valuation</MudTh>
-        <MudTh>Market Cap</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Rank">@context.Rank</MudTd>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Valuation">@context.USDValuation</MudTd>
-        <MudTd DataLabel="Market Cap">@context.MarketCap</MudTd>
-    </RowTemplate>
-    <FooterContent>
-        <MudTd>Rank</MudTd>
-        <MudTd>Name</MudTd>
-        <MudTd>Coin Valuation</MudTd>
-        <MudTd>Market Cap</MudTd>
-    </FooterContent>
-    <PagerContent>
-        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
-    </PagerContent>
-</MudTable>
+<div class="page-background">
+    <div class="card-header">
+        <div class="row">
+            <h2> The top 100 cryptocurrencies by market cap </h2>
+        </div>
+        <div class="row">
+            <p>
+                Disclosure: All data displayed here comes from Coingecko.
+            </p>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <MudTable Items="@_cryptocurrencies" FixedHeader="@_fixedHeader" Height="@("400px")">
+                <HeaderContent>
+                    <MudTh>Rank</MudTh>
+                    <MudTh>Name</MudTh>
+                    <MudTh>Coin Valuation</MudTh>
+                    <MudTh>Market Cap</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Rank">@context.Rank</MudTd>
+                    <MudTd DataLabel="Name">@context.Name</MudTd>
+                    <MudTd DataLabel="Valuation">@context.USDValuation</MudTd>
+                    <MudTd DataLabel="Market Cap">@context.MarketCap</MudTd>
+                </RowTemplate>
+                <FooterContent>
+                    <MudTd>Rank</MudTd>
+                    <MudTd>Name</MudTd>
+                    <MudTd>Coin Valuation</MudTd>
+                    <MudTd>Market Cap</MudTd>
+                </FooterContent>
+                <PagerContent>
+                    <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+                </PagerContent>
+            </MudTable>
+        </div>
+    </div>
+</div>
 
 
 
