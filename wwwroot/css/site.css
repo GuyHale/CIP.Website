@@ -34,6 +34,62 @@ a, .btn-link {
     color: red;
 }
 
+.header-typography {
+    color: #222222;
+    font-size: 1.8rem;
+    font-weight: 200;
+    font-family: "Helvetica", "Arial", Sans-serif;
+}
+
+.line-divider-solid {
+    display: block;
+    border-top: 0.05rem solid #b4b4b4;
+    width: 60rem;
+}
+
+.white-text {
+    color: white;
+}
+
+.css-button-sliding-to-left--rose {
+    min-width: 130px;
+    height: 40px;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    outline: none;
+    border-radius: 5px;
+    z-index: 0;
+    background: #fff;
+    overflow: hidden;
+    border: 2px solid #ff0a78;
+    color: #ff0a78;
+}
+
+.css-button-sliding-to-left--rose:hover {
+    color: #fff;
+}
+
+.css-button-sliding-to-left--rose:hover:after {
+    width: 100%;
+}
+
+.css-button-sliding-to-left--rose:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    transition: all 0.3s ease;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: #ff0a78;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
@@ -62,3 +118,4 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
