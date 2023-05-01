@@ -39,6 +39,7 @@ a, .btn-link {
     font-size: 1.8rem;
     font-weight: 200;
     font-family: "Helvetica", "Arial", Sans-serif;
+    max-width: 40rem;
 }
 
 .line-divider-solid {
@@ -49,6 +50,91 @@ a, .btn-link {
 
 .white-text {
     color: white;
+}
+
+.img-size {
+    max-height: 20rem;
+    max-width: 20rem;
+}
+
+.custom-footer {
+    width: 100%;
+    border-top: 0.05rem solid #b4b4b4;
+    box-shadow: 5px 10px;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Helvetica", "Arial", Sans-serif;
+}
+
+.footer {
+    position: relative;
+    width: 100%;
+    max-height: 20rem;
+    background-image: linear-gradient(white, #ff0a78);
+    padding: 1rem 0 0 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.bg-gradient {
+    background-image: linear-gradient(white, #ff0a78);
+}
+
+
+.social-icon,
+.menu {
+    position: relative;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.social-icon__item,
+.menu__item {
+    list-style: none;
+}
+
+.social-icon__link {
+    z-index: 20;
+    font-size: 2rem;
+    color: #fff;
+    display: inline-block;
+    transition: 0.5s;
+}
+
+    .social-icon__link:hover {
+        transform: translateY(-10px);
+    }
+
+.menu__link {
+    z-index: 20;
+    font-size: 1.2rem;
+    color: #fff;
+    margin: 0 10px;
+    display: inline-block;
+    transition: 0.5s;
+    text-decoration: none;
+    opacity: 0.75;
+    font-weight: 300;
+}
+
+    .menu__link:hover {
+        opacity: 1;
+    }
+
+.footer p {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 300;
 }
 
 .css-button-sliding-to-left--rose {
