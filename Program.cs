@@ -1,14 +1,14 @@
 using CIP.Website.Data;
 using CIP.Website.Data.Interfaces;
 using CIP.Website.Data.Services;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddMudServices();
 
 builder.Services
     .AddSingleton<ICryptocurrency, CryptocurrencyService>()

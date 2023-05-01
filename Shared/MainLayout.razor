@@ -1,9 +1,12 @@
 ﻿@inherits LayoutComponentBase
 
 <PageTitle>CIP.Website</PageTitle>
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-<div class="page">
-    <div class="sidebar">
+<div class="page main-bg">
+    <div class="sidebar ">
         <NavMenu />
     </div>
 
@@ -14,6 +17,8 @@
 
         <article class="content px-4">
             @Body
-        </article>
+        </article>   
+        <CIP.Website.Components.CustomFooter />
     </main>
+    
 </div>
