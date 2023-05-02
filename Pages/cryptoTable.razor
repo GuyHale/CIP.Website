@@ -23,65 +23,62 @@
         padding-right: 0;
     }
 </style>
-
-<div class="page-background">
-    <div class="card-header">
-        <div class="row">
-            <h2> The top 100 cryptocurrencies by market cap </h2>
+<div class="d-flex align-items-center flex-column pt-12">
+    <div>
+        <h2 class="header-typography">The top 100 cryptocurrencies.</h2>
+    </div>
+    <div class="d-flex flex-row pt-12 align-content-around flex-grow-1">
+        <div class="mr-4">
+            <button type="button" href="#" class="css-button-sliding-to-left--rose">Get your API key now</button>
         </div>
-        <div class="row">
-            <p>
-                Disclosure: All data displayed here comes from Coingecko.
-            </p>
+        <div class="ml-4">
+            <button type="button" href="#" class="css-button-sliding-to-left--rose">Read API documentation</button>
         </div>
+    </div>
+    <div class="pt-16">
+        <span class="line-divider-solid white-text"></span>
     </div>
     <div class="card-body">
-        <div class="row">
-            <table class="table table-dark">
-                <thead>
-                    <tr>
-                        <th scope="col">Rank</th>
-                        <th scope="col">Cryptocurrency</th>
-                        <th scope="col">Coin valuation</th>
-                        <th scope="col">Market cap</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if(!_cryptocurrencies.Any() && _justSearched)
-                    {
-                        <tr>
-                            <td colspan="12">
-                                <div class="alert alert-danger" role="alert">
-                                    Something went wrong...please refresh the page or try again later!
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                    @foreach(Cryptocurrency cryptocurrency in _cryptocurrencies)
-                    {
-                        <tr class="row-on-hover">
-                            <td>@cryptocurrency.Rank</td>
-                            <td>@cryptocurrency.Name</td>
-                            <td>@cryptocurrency.USDValuation</td>
-                            <td>@cryptocurrency.MarketCap</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+        @if(_cryptocurrencies.Any())
+        {
+            <MudTable @ref="@_table" Items="@_cryptocurrencies" RowsPerPage="10" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+                <HeaderContent>
+                    <MudTh>Rank</MudTh>
+                    <MudTh>Project name</MudTh>
+                    <MudTh>Coin Valuation</MudTh>
+                    <MudTh>Market Cap</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Rank">@context.Rank</MudTd>
+                    <MudTd DataLabel="Name">@context.Name</MudTd>
+                    <MudTd DataLabel="Coin Price">@context.USDValuation</MudTd>
+                    <MudTd DataLabel="Market cap">@context.MarketCap</MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudPagination Variant="Variant.Outlined" SelectedChanged="PageChanged" Count="@((_table.GetFilteredItemsCount() + _table.RowsPerPage - 1) / _table.RowsPerPage)" Class="pa-4" />
+                </PagerContent>
+            </MudTable>
+        }       
     </div>
 </div>
-
-
 
 @code {
     private bool _fixedHeader = true;
     private bool _justSearched = false;
+    private const int _numPerPage = 10;
     private IEnumerable<Cryptocurrency> _cryptocurrencies = Enumerable.Empty<Cryptocurrency>();
-
+    private IEnumerable<Cryptocurrency> _cryptocurrenciesOriginal = Enumerable.Empty<Cryptocurrency>();
+    private IEnumerable<Cryptocurrency[]> _cryptocurrenciesChunked = Enumerable.Empty<Cryptocurrency[]>();
+    private MudTable<Cryptocurrency> _table = new();
+    
     protected override async Task OnInitializedAsync()
     {
-        _cryptocurrencies = await cryptocurrency.Get();
+        _cryptocurrencies = _cryptocurrenciesOriginal = await cryptocurrency.Get();
         _justSearched = true;
+    }
+
+    private void PageChanged(int i)
+    {
+        _table.NavigateTo(i - 1);
     }
 }
