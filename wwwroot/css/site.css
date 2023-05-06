@@ -41,11 +41,26 @@ a, .btn-link {
     font-family: "Helvetica", "Arial", Sans-serif;
     max-width: 40rem;
 }
+.sub-header-typography {
+    color: #222222;
+    font-size: 1.2rem;
+    font-weight: 200;
+    font-family: "Helvetica", "Arial", Sans-serif;
+    max-width: 40rem;
+}
 
 .line-divider-solid {
     display: block;
     border-top: 0.05rem solid #b4b4b4;
     width: 60rem;
+}
+
+.table-width {
+    width: 50rem;
+}
+
+.logo-row-width {
+    width: 40rem;
 }
 
 .white-text {
