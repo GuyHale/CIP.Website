@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIP.Website", "CIP.Website.csproj", "{C5CFF906-563C-4519-BD12-2EF169C77240}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIP.Website", "CIP.Website.csproj", "{C5CFF906-563C-4519-BD12-2EF169C77240}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CIP.Website.Data", "CIP.Website.Data\CIP.Website.Data.csproj", "{306E65C0-6517-4880-8E1E-EE5892443978}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIP.Website.Data", "CIP.Website.Data\CIP.Website.Data.csproj", "{306E65C0-6517-4880-8E1E-EE5892443978}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
