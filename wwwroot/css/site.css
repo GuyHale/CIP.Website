@@ -191,6 +191,16 @@ a, .btn-link {
     background: #ff0a78;
 }
 
+authenticationPopup {
+    width: 30rem;
+    height: 30rem;
+    position: fixed;
+    top: calc(50% - 30rem);
+    left: calc(50% - 30rem);
+    z-index: 50;
+    background-color: blue;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;

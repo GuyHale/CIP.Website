@@ -2,7 +2,7 @@
 
 namespace CIP.Website.Data.Models
 {
-    public class CustomUser
+    public class User
     {
         [Required]
         public string UserName { get; set; } = string.Empty;
