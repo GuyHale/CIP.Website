@@ -9,7 +9,7 @@ namespace CIP.Website.Data.Interfaces
 {
     public interface ICustomAuthentication
     {
-        Task<ICustomResponse> Register(CustomUser user);
+        Task<ICustomResponse> Register(User user);
         Task<ICustomResponse> Login(LoginUser loginUser);
     }
 }
