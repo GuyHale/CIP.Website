@@ -1,11 +1,11 @@
-﻿using CIP.Website.Data.Models;
+﻿using CIP.Website.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CIP.Website.Data.Interfaces
+namespace CIP.Website.Interfaces
 {
     public interface ICustomAuthentication
     {

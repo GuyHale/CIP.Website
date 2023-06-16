@@ -1,10 +1,9 @@
-﻿using CIP.Website.Data.Interfaces;
-using CIP.Website.Data.Models;
-using Microsoft.Extensions.Logging;
+﻿using CIP.Website.Helpers;
+using CIP.Website.Interfaces;
+using CIP.Website.Models;
 using Newtonsoft.Json;
-using System.Net.Http.Json;
 
-namespace CIP.Website.Data.Services
+namespace CIP.Website.Services
 {
     public class CustomAuthenticationService : ICustomAuthentication
     {

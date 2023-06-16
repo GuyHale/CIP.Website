@@ -1,12 +1,6 @@
-﻿using CIP.Website.Data.Interfaces;
-using CIP.Website.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CIP.Website.Interfaces;
 
-namespace CIP.Website.Data
+namespace CIP.Website.Helpers
 {
     public static class ResponseHelpers
     {
