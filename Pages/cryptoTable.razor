@@ -91,8 +91,6 @@
 </div>
 
 @code {
-    private bool _fixedHeader = true;
-    private bool _justSearched = false;
     private const int _numPerPage = 10;
     private IEnumerable<Cryptocurrency> _cryptocurrencies = Enumerable.Empty<Cryptocurrency>();
     private IEnumerable<Cryptocurrency> _cryptocurrenciesOriginal = Enumerable.Empty<Cryptocurrency>();
@@ -103,7 +101,6 @@
     protected override async Task OnInitializedAsync()
     {
         _cryptocurrencies = _cryptocurrenciesOriginal = await cryptocurrency.Get();
-        _justSearched = true;
     }
 
     private void PageChanged(int i)

@@ -75,7 +75,7 @@
 
     bool success = false;
     string[] errors = { };
-    private User _user = new();
+    private SignUpUser _user = new();
     MudTextField<string> pwField1 = new();
     MudForm form = new();
 
@@ -110,6 +110,9 @@
         {
             return;
         }
+
+        _user.FirstName = "a";
+        _user.LastName = "a";
 
         ICustomResponse registrationResponse = await _customAuthentication.Register(_user);
 
