@@ -10,6 +10,7 @@
 @using MudBlazor;
 @inject ICryptocurrency cryptocurrency
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
 
 <style>
     .row-on-hover:hover {
@@ -122,5 +123,5 @@
         DialogOptions closeOnEscapeKey = new DialogOptions() { CloseOnEscapeKey = true };
 
         DialogService.Show<LoginPopUp>("Sign up or login", closeOnEscapeKey);
-    }
+    }    
 }

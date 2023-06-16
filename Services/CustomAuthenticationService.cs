@@ -16,13 +16,13 @@ namespace CIP.Website.Services
             _logger = logger;
         }
 
-        public async Task<ICustomResponse> Register(CustomUser user)
+        public async Task<ICustomResponse> Register(User user)
         {
             try
             {
                 user.ApiKey = Guid.NewGuid().ToString();
                 HttpClient httpClient = _httpClientFactory.CreateClient("CIP.API");
-                var res = await httpClient.PostAsJsonAsync<CustomUser>("api/authenticate/register", user);
+                var res = await httpClient.PostAsJsonAsync<User>("api/authenticate/register", user);
 
                 if (!res.IsSuccessStatusCode)
                 {
