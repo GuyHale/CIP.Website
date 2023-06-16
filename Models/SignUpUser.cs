@@ -2,7 +2,7 @@
 
 namespace CIP.Website.Models
 {
-    public class User
+    public class SignUpUser
     {
         [Required]
         public string UserName { get; set; } = string.Empty;
@@ -15,9 +15,13 @@ namespace CIP.Website.Models
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
 
+        [Required]
         public string FirstName { get; set; } = string.Empty;
 
+        [Required]
         public string LastName { get; set; } = string.Empty;
+
+        public string Salt { get; set; } = string.Empty;
         public string ApiKey { get; set; } = string.Empty;
     }
 }
