@@ -1,6 +1,5 @@
-using CIP.Website.Data;
-using CIP.Website.Data.Interfaces;
-using CIP.Website.Data.Services;
+using CIP.Website.Services;
+using CIP.Website.Interfaces;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);

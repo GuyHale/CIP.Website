@@ -1,4 +1,4 @@
-﻿namespace CIP.Website.Data.Models
+﻿namespace CIP.Website.Models
 {
     public class ApiResponse
     {
