@@ -9,57 +9,52 @@
     .dialog-width {
         min-width: 40rem;
     }
+
+    .no-border {
+        border: none;
+    }
 </style>
 
 <MudDialog Class="dialog-width">
     <DialogContent>           
         <MudItem>
-            <MudPaper Class="pa-2">
-                <MudTabs Elevation="2" Rounded="true" PanelClass="pa-2">
-                    <MudTabPanel Text="Sign up">
-                        <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" ReadOnly="false">
-                            <MudTextField T="string" @bind-Value="@_user.UserName" Label="Username" Required="true" RequiredError="User name is required!" />
-                            <MudTextField T="string" @bind-Value="@_user.Email" Label="Email" Required="true" RequiredError="Email is required!"
-                                            Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})"/>
-                            <MudTextField T="string" @bind-Value="@_user.Password" Label="Password" HelperText="Choose a strong password" @ref="pwField1"
-                                            InputType="InputType.Password"
-                                            Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
-                                            RequiredError="Password is required!" />
-                            <MudTextField T="string" 
-                                            Label="Password" HelperText="Repeat the password" InputType="InputType.Password"
-                                            Validation="@(new Func<string, string?>(PasswordMatch))" />
+            <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" Centered="true" PanelClass="pa-6">
+                <MudTabPanel Text="Sign up">
+                    <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" ReadOnly="false">
+                        <MudTextField T="string" @bind-Value="@_user.UserName" Label="Username" Required="true" RequiredError="User name is required!" />
+                        <MudTextField T="string" @bind-Value="@_user.Email" Label="Email" Required="true" RequiredError="Email is required!"
+                                        Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})"/>
+                        <MudTextField T="string" @bind-Value="@_user.Password" Label="Password" HelperText="Choose a strong password" @ref="pwField1"
+                                        InputType="InputType.Password"
+                                        Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
+                                        RequiredError="Password is required!" />
+                        <MudTextField T="string" 
+                                        Label="Password" HelperText="Repeat the password" InputType="InputType.Password"
+                                        Validation="@(new Func<string, string?>(PasswordMatch))" />
 
-                            <div class="d-flex row justify-content-evenly">
-                                <div class="col-auto">
-                                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@OnRegistration">Sign up</MudButton>
-                                </div>
-                                <div class="col-auto">
-                                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@(()=>form.Reset())">Reset</MudButton>
-                                </div>
+                        <div class="d-flex row justify-content-evenly">
+                            <div class="col-auto">
+                                <button type="button" href="#" class="css-button-sliding-to-left--rose" @onclick="OnRegistration">Sign up</button>
                             </div>
-                        </MudForm>
-                    </MudTabPanel>
-                    <MudTabPanel Text="Login">
-                        <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" ReadOnly="false">
-                            <MudTextField T="string" Label="Username" Required="true" RequiredError="User name is required!" />
-                            <MudTextField T="string" Label="Password" HelperText="Choose a strong password" @ref="pwField1"
-                                            InputType="InputType.Password"
-                                            Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
-                                            RequiredError="Password is required!" />
+                        </div>
+                    </MudForm>
+                </MudTabPanel>
+                <MudTabPanel Text="Login">
+                    <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" ReadOnly="false">
+                        <MudTextField T="string" @bind-Value="@_loginUser.UserName" Label="Username" Required="true" RequiredError="Enter your username" />
+                        <MudTextField T="string" @bind-Value="@_loginUser.Password" Label="Password" HelperText="Enter your password" @ref="pwField1"
+                                        InputType="InputType.Password"
+                                        Required="true"
+                                        RequiredError="Password is required!" />
 
-
-                            <div class="d-flex row justify-content-evenly">
-                                <div class="col-auto">
-                                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@(()=>{form.Validate();})">Sign up</MudButton>
-                                </div>
-                                <div class="col-auto">
-                                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@(()=>form.Reset())" Class="mx-2">Reset</MudButton>
-                                </div>
+                        <div class="d-flex row justify-content-evenly">
+                            <div class="col-auto">
+                                <button type="button" href="#" class="css-button-sliding-to-left--rose" @onclick="OnLogin">Login</button>
                             </div>
-                        </MudForm>
-                    </MudTabPanel>
-                </MudTabs>                       
-            </MudPaper>                   
+                        </div>
+                    </MudForm>
+                </MudTabPanel>
+            </MudTabs>                                        
         </MudItem>                        
     </DialogContent>
     <DialogActions>
@@ -67,15 +62,18 @@
         <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
     </DialogActions>
 </MudDialog>
+
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; } = new();
+    private UserSession? _userSession { get; set; } = null;
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Submit() => MudDialog.Close<UserSession?>(_userSession);
     void Cancel() => MudDialog.Cancel();
 
     bool success = false;
     string[] errors = { };
     private SignUpUser _user = new();
+    private LoginUser _loginUser = new();
     MudTextField<string> pwField1 = new();
     MudForm form = new();
 
@@ -113,14 +111,38 @@
 
         _user.FirstName = "a";
         _user.LastName = "a";
+        await AuthenticationAttempt(_customAuthentication.Register, _user);
+    }
 
-        ICustomResponse registrationResponse = await _customAuthentication.Register(_user);
+    private async Task OnLogin()
+    {
+        await form.Validate();
+        if(!form.IsValid)
+        {
+            return;
+        }
+        await AuthenticationAttempt(_customAuthentication.Login, _loginUser);
+    }
 
-        if(!registrationResponse.Success)
+    private void AuthenticateSession(AuthenticatedUser authenticatedUser)
+    {
+        _userSession = new()
+        {
+            AuthenticatedUser = authenticatedUser,
+            IsAuthenticated = true
+        };
+    }
+
+    private async Task AuthenticationAttempt<TUser>(Func<TUser, Task<ICustomResponse>> authenticator, TUser user)
+    {
+        AuthenticationResponse? authenticationResponse = await authenticator(user) as AuthenticationResponse;
+
+        if (authenticationResponse is null || authenticationResponse.AuthenticatedUser is null || !authenticationResponse.Success)
         {
             form.ResetValidation();
             return;
         }
+        AuthenticateSession(authenticationResponse.AuthenticatedUser);
         Submit();
     }
 }

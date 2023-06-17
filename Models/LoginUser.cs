@@ -5,7 +5,7 @@ namespace CIP.Website.Models
     public class LoginUser
     {
         [Required]
-        public string Username { get; set; } = string.Empty;
+        public string UserName { get; set; } = string.Empty;
 
         [Required]
         [MinLength(8)]

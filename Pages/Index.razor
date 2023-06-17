@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject IDialogService DialogService
 @using CIP.Website.Components;
+@using CIP.Website.Models;
 
 <PageTitle>Home</PageTitle>
 <div class="d-flex align-items-center flex-column pt-12">
@@ -58,12 +59,14 @@
 </div>
 
 @code {
+    [Parameter] public UserSession? userSession { get; set; } = null;
 
-    private void OpenDialog()
+    private async void OpenDialog()
     {
         DialogOptions closeOnEscapeKey = new DialogOptions() { CloseOnEscapeKey = true };
 
-        DialogService.Show<LoginPopUp>("Sign up or login", closeOnEscapeKey);
+        IDialogReference myDialogReference = DialogService.Show<LoginPopUp>("Sign up or login", closeOnEscapeKey);
+        userSession = await myDialogReference.GetReturnValueAsync<UserSession>();
     }
 }
 
