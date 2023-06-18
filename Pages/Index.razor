@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
 @using CIP.Website.Components;
 @using CIP.Website.Models;
 
@@ -64,7 +65,7 @@
     {
         DialogOptions closeOnEscapeKey = new DialogOptions() { CloseOnEscapeKey = true };
 
-        IDialogReference myDialogReference = DialogService.Show<LoginPopUp>("Create Api Key", closeOnEscapeKey);
+        IDialogReference myDialogReference = DialogService.Show<ApiKeyCreater>("Create Api Key", closeOnEscapeKey);
     }
 }
 
