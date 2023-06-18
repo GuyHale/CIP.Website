@@ -26,17 +26,17 @@ namespace CIP.Website.Services
 
                 if (!res.IsSuccessStatusCode)
                 {
-                    return ResponseHelpers.ServerError<RegistrationResponse>();
+                    return ResponseHelpers.ServerError<AuthenticationResponse>();
                 }
                 string jsonResponse = await res.Content.ReadAsStringAsync();
-                RegistrationResponse customResponse = JsonConvert.DeserializeObject<RegistrationResponse>(jsonResponse) ?? new();
-                return customResponse;
+                AuthenticationResponse authenticationResponse = JsonConvert.DeserializeObject<AuthenticationResponse>(jsonResponse) ?? new();
+                return authenticationResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, System.Reflection.MethodBase.GetCurrentMethod()?.Name);
+                _logger.LogError(ex, "{MethodName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
             }
-            return ResponseHelpers.ServerError<RegistrationResponse>();
+            return ResponseHelpers.ServerError<AuthenticationResponse>();
         }
 
         public async Task<ICustomResponse> Login(LoginUser loginUser)
@@ -44,19 +44,19 @@ namespace CIP.Website.Services
             try
             {
                 HttpClient httpClient = _httpClientFactory.CreateClient("CIP.API");
-                var res = await httpClient.PostAsJsonAsync<LoginUser>("api/authenticate/login", loginUser);
+                var res = await httpClient.PostAsJsonAsync<LoginUser>("cip/authenticate/login", loginUser);
 
                 if (!res.IsSuccessStatusCode)
                 {
                     return ResponseHelpers.ServerError<LoginResponse>();
                 }
                 string jsonResponse = await res.Content.ReadAsStringAsync();
-                RegistrationResponse customResponse = JsonConvert.DeserializeObject<RegistrationResponse>(jsonResponse) ?? new();
-                return customResponse;
+                AuthenticationResponse authenticationResponse = JsonConvert.DeserializeObject<AuthenticationResponse>(jsonResponse) ?? new();
+                return authenticationResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, System.Reflection.MethodBase.GetCurrentMethod()?.Name);
+                _logger.LogError(ex, "{MethodName}", System.Reflection.MethodBase.GetCurrentMethod()?.Name);
             }
             return ResponseHelpers.ServerError<LoginResponse>();
         }
