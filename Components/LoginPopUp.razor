@@ -2,8 +2,7 @@
 @using System.ComponentModel.DataAnnotations;
 @using CIP.Website.Interfaces;
 @using CIP.Website.Models;
-
-@inject ICustomAuthentication _customAuthentication;
+@inject IApiKeyCreation apiKeyCreation;
 
 <style>
     .dialog-width {
@@ -18,131 +17,52 @@
 <MudDialog Class="dialog-width">
     <DialogContent>           
         <MudItem>
-            <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" Centered="true" PanelClass="pa-6">
-                <MudTabPanel Text="Sign up">
-                    <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" ReadOnly="false">
-                        <MudTextField T="string" @bind-Value="@_user.UserName" Label="Username" Required="true" RequiredError="User name is required!" />
-                        <MudTextField T="string" @bind-Value="@_user.Email" Label="Email" Required="true" RequiredError="Email is required!"
-                                        Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})"/>
-                        <MudTextField T="string" @bind-Value="@_user.Password" Label="Password" HelperText="Choose a strong password" @ref="pwField1"
-                                        InputType="InputType.Password"
-                                        Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
-                                        RequiredError="Password is required!" />
-                        <MudTextField T="string" 
-                                        Label="Password" HelperText="Repeat the password" InputType="InputType.Password"
-                                        Validation="@(new Func<string, string?>(PasswordMatch))" />
 
-                        <div class="d-flex row justify-content-evenly">
-                            <div class="col-auto">
-                                <button type="button" href="#" class="css-button-sliding-to-left--rose" @onclick="OnRegistration">Sign up</button>
-                            </div>
-                        </div>
-                    </MudForm>
-                </MudTabPanel>
-                <MudTabPanel Text="Login">
-                    <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" ReadOnly="false">
-                        <MudTextField T="string" @bind-Value="@_loginUser.UserName" Label="Username" Required="true" RequiredError="Enter your username" />
-                        <MudTextField T="string" @bind-Value="@_loginUser.Password" Label="Password" HelperText="Enter your password" @ref="pwField1"
-                                        InputType="InputType.Password"
-                                        Required="true"
-                                        RequiredError="Password is required!" />
+            @if (!_creatingApiKey)
+            {
+                <div class="col-auto">
+                    <button type="button" href="#" class="css-button-sliding-to-left--rose" @onclick="ApiKeyValidation">Create API Key</button>
+               </div>                   
+            }
+            @if(_creatingApiKey && _apiKeyCreationResponse is null)
+            {
+                <div class="col-auto">
+                    <MudProgressCircular Color="Color.Secondary" Indeterminate="true" />
+                </div>               
+            }
 
-                        <div class="d-flex row justify-content-evenly">
-                            <div class="col-auto">
-                                <button type="button" href="#" class="css-button-sliding-to-left--rose" @onclick="OnLogin">Login</button>
-                            </div>
-                        </div>
-                    </MudForm>
-                </MudTabPanel>
-            </MudTabs>                                        
+            @if (_apiKeyCreationResponse is not null)
+            {
+                if(_apiKeyCreationResponse.Success)
+                {
+                    <MudChip Variant="Variant.Outlined" Color="Color.Secondary">Api key: @_apiKey</MudChip>
+                }
+                <MudAlert Severity="@(_apiKeyCreationResponse.Success ? Severity.Success : Severity.Warning)" Variant="Variant.Outlined">@(_apiKeyCreationResponse.Success ? "Sorry! We failed to create your api key. Please try again" : "Congratulations! We successfully created your api key.")</MudAlert>
+            }
         </MudItem>                        
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+        <MudButton OnClick="Close">Cancel</MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; } = new();
-    private UserSession? _userSession { get; set; } = null;
+    private void Close() => MudDialog.Close(DialogResult.Ok(true));
+    private string _apiKey { get; set; } = string.Empty;
+    private bool _creatingApiKey { get; set; } = false;
+    private ICustomResponse? _apiKeyCreationResponse { get; set; }
 
-    void Submit() => MudDialog.Close<UserSession?>(_userSession);
-    void Cancel() => MudDialog.Cancel();
+    private string CreateApiKey() => _apiKey = Guid.NewGuid().ToString();
 
-    bool success = false;
-    string[] errors = { };
-    private SignUpUser _user = new();
-    private LoginUser _loginUser = new();
-    MudTextField<string> pwField1 = new();
-    MudForm form = new();
-
-    private IEnumerable<string> PasswordStrength(string pw)
+    private async Task ApiKeyValidation()
     {
-        if (string.IsNullOrWhiteSpace(pw))
-        {
-            yield return "Password is required!";
-            yield break;
-        }
-        if (pw.Length < 8)
-            yield return "Password must be at least of length 8";
-        if (!Regex.IsMatch(pw, @"[A-Z]"))
-            yield return "Password must contain at least one capital letter";
-        if (!Regex.IsMatch(pw, @"[a-z]"))
-            yield return "Password must contain at least one lowercase letter";
-        if (!Regex.IsMatch(pw, @"[0-9]"))
-            yield return "Password must contain at least one digit";
-    }
+        _creatingApiKey = true;
+        _apiKeyCreationResponse = null;
+        StateHasChanged();
 
-    private string? PasswordMatch(string arg)
-    {
-        if (pwField1.Value != arg)
-            return "Passwords don't match";
-        return null;
-    }
-
-    private async Task OnRegistration()
-    {
-        await form.Validate();
-        if(!form.IsValid)
-        {
-            return;
-        }
-
-        _user.FirstName = "a";
-        _user.LastName = "a";
-        await AuthenticationAttempt(_customAuthentication.Register, _user);
-    }
-
-    private async Task OnLogin()
-    {
-        await form.Validate();
-        if(!form.IsValid)
-        {
-            return;
-        }
-        await AuthenticationAttempt(_customAuthentication.Login, _loginUser);
-    }
-
-    private void AuthenticateSession(AuthenticatedUser authenticatedUser)
-    {
-        _userSession = new()
-        {
-            AuthenticatedUser = authenticatedUser,
-            IsAuthenticated = true
-        };
-    }
-
-    private async Task AuthenticationAttempt<TUser>(Func<TUser, Task<ICustomResponse>> authenticator, TUser user)
-    {
-        AuthenticationResponse? authenticationResponse = await authenticator(user) as AuthenticationResponse;
-
-        if (authenticationResponse is null || authenticationResponse.AuthenticatedUser is null || !authenticationResponse.Success)
-        {
-            form.ResetValidation();
-            return;
-        }
-        AuthenticateSession(authenticationResponse.AuthenticatedUser);
-        Submit();
+        _apiKeyCreationResponse = await apiKeyCreation.CreateApiKey(_apiKey);
+        StateHasChanged();
+        _creatingApiKey = false;
     }
 }
