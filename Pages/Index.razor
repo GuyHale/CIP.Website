@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
 @using CIP.Website.Components;
 @using CIP.Website.Models;
 
@@ -59,14 +60,12 @@
 </div>
 
 @code {
-    [Parameter] public UserSession? userSession { get; set; } = null;
 
-    private async void OpenDialog()
+    private void OpenDialog()
     {
         DialogOptions closeOnEscapeKey = new DialogOptions() { CloseOnEscapeKey = true };
 
-        IDialogReference myDialogReference = DialogService.Show<LoginPopUp>("Sign up or login", closeOnEscapeKey);
-        userSession = await myDialogReference.GetReturnValueAsync<UserSession>();
+        IDialogReference myDialogReference = DialogService.Show<ApiKeyCreater>("Create Api Key", closeOnEscapeKey);
     }
 }
 

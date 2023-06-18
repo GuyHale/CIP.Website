@@ -11,7 +11,7 @@ builder.Services.AddMudServices();
 
 builder.Services
     .AddSingleton<ICryptocurrency, CryptocurrencyService>()
-    .AddSingleton<ICustomAuthentication, CustomAuthenticationService>()
+    .AddSingleton<IApiKeyCreation, ApiKeyCreation>()
     .AddHttpContextAccessor()
     .AddHttpClient("CIP.API", client =>
     {
