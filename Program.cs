@@ -1,6 +1,5 @@
-using CIP.Website.Data;
-using CIP.Website.Data.Interfaces;
-using CIP.Website.Data.Services;
+using CIP.Website.Services;
+using CIP.Website.Interfaces;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +11,7 @@ builder.Services.AddMudServices();
 
 builder.Services
     .AddSingleton<ICryptocurrency, CryptocurrencyService>()
+    .AddSingleton<IApiKeyCreation, ApiKeyCreation>()
     .AddHttpContextAccessor()
     .AddHttpClient("CIP.API", client =>
     {
@@ -27,7 +27,6 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();

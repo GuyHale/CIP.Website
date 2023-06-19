@@ -2,12 +2,15 @@
 
 <PageTitle>Cryptocurrencies</PageTitle>
 
-@using CIP.Website.Data
-@using CIP.Website.Data.Interfaces;
-@using CIP.Website.Data.Models;
-@using CIP.Website.Data.Services;
+@using CIP.Website.Components;
+@using CIP.Website;
+@using CIP.Website.Interfaces;
+@using CIP.Website.Models;
+@using CIP.Website.Services;
 @using MudBlazor;
 @inject ICryptocurrency cryptocurrency
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
 
 <style>
     .row-on-hover:hover {
@@ -30,7 +33,7 @@
     </div>
     <div class="d-flex flex-row pt-12 align-content-around flex-grow-1">
         <div class="mr-4">
-            <button type="button" href="#" class="css-button-sliding-to-left--rose">Get your API key now</button>
+            <button type="button" href="#" @onclick="OpenDialog" class="css-button-sliding-to-left--rose">Get your API key now</button>
         </div>
         <div class="ml-4">
             <button type="button" href="#" class="css-button-sliding-to-left--rose">Read API documentation</button>
@@ -88,8 +91,6 @@
 </div>
 
 @code {
-    private bool _fixedHeader = true;
-    private bool _justSearched = false;
     private const int _numPerPage = 10;
     private IEnumerable<Cryptocurrency> _cryptocurrencies = Enumerable.Empty<Cryptocurrency>();
     private IEnumerable<Cryptocurrency> _cryptocurrenciesOriginal = Enumerable.Empty<Cryptocurrency>();
@@ -100,7 +101,6 @@
     protected override async Task OnInitializedAsync()
     {
         _cryptocurrencies = _cryptocurrenciesOriginal = await cryptocurrency.Get();
-        _justSearched = true;
     }
 
     private void PageChanged(int i)
@@ -114,4 +114,11 @@
         _cryptocurrencies = _cryptocurrencies.Where(x => x.Name.ToLower().Contains(_cryptoName.ToLower()));
         StateHasChanged();
     }
+
+    private void OpenDialog()
+    {
+        DialogOptions closeOnEscapeKey = new DialogOptions() { CloseOnEscapeKey = true };
+
+        DialogService.Show<ApiKeyCreater>("Get api key", closeOnEscapeKey);
+    }    
 }

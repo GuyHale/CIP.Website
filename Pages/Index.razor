@@ -1,4 +1,8 @@
 ﻿@page "/"
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@using CIP.Website.Components;
+@using CIP.Website.Models;
 
 <PageTitle>Home</PageTitle>
 <div class="d-flex align-items-center flex-column pt-12">
@@ -7,7 +11,7 @@
     </div>
     <div class="d-flex flex-row pt-12 align-content-around flex-grow-1">
         <div class="mr-4">
-            <button type="button" href="#" class="css-button-sliding-to-left--rose">Get your API key now</button>
+            <button type="button" @onclick="OpenDialog" href="#" class="css-button-sliding-to-left--rose">Get your API key now</button>          
         </div>
         <div class="ml-4">
             <button type="button" href="#" class="css-button-sliding-to-left--rose">Read API documentation</button>
@@ -54,6 +58,16 @@
         </div>
     </div>
 </div>
+
+@code {
+
+    private void OpenDialog()
+    {
+        DialogOptions closeOnEscapeKey = new DialogOptions() { CloseOnEscapeKey = true };
+
+        IDialogReference myDialogReference = DialogService.Show<ApiKeyCreater>("Create Api Key", closeOnEscapeKey);
+    }
+}
 
 
 

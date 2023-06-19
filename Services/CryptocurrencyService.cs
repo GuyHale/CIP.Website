@@ -1,16 +1,9 @@
-﻿using CIP.Website.Data.Interfaces;
-using CIP.Website.Data.Models;
-using Microsoft.Extensions.Logging;
+﻿using CIP.Website.Interfaces;
+using CIP.Website.Models;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace CIP.Website.Data.Services
+
+namespace CIP.Website.Services
 {
     internal class CryptocurrencyService : ICryptocurrency
     {
